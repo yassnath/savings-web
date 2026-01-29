@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabungan Solvix Studio</title>
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body class="theme-standard-light">
+    <div class="bg-ambient" aria-hidden="true">
+      <span class="blob b1"></span>
+      <span class="blob b2"></span>
+      <span class="blob b3"></span>
+      <span class="sparkle s1">✦</span>
+      <span class="sparkle s2">✦</span>
+      <span class="sparkle s3">✦</span>
+    </div>
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" id="brandIcon" data-icon="brand">💰</div>
+        <div>
+          <div class="brand-title" data-i18n="brandTitle">Tabungan</div>
+          <div class="brand-sub" data-i18n="brandSub">Catatan keuangan harian</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="chip-btn profile-chip" id="profileBtn" type="button">
+          <span id="profileChipText">Guest</span>
+        </button>
+        <div class="profile-dropdown" id="profileDropdown">
+          <div class="profile-mini">
+            <div class="profile-mini-head">
+              <div>
+                <div class="profile-mini-name" id="profileMiniName">Nama</div>
+                <div class="profile-mini-user" id="profileMiniUser">@username</div>
+              </div>
+              <button class="profile-close" id="profileCloseBtn" type="button" aria-label="Close">x</button>
+            </div>
+          </div>
+        <button class="drop-item" data-go="themes" type="button">
+          <span class="drop-icon" data-icon="themes">🎨</span>
+          <span data-i18n="menuThemes">Tema</span>
+        </button>
+        <button class="drop-item" data-go="calculator" type="button">
+          <span class="drop-icon" data-icon="calculator">🧮</span>
+          <span data-i18n="menuCalculator">Kalkulator</span>
+        </button>
+        <button class="drop-item" data-go="profile" type="button">
+          <span class="drop-icon" data-icon="profile">👤</span>
+          <span data-i18n="menuProfile">Profile</span>
+        </button>
+        <button class="drop-item" data-go="settings" type="button">
+          <span class="drop-icon" data-icon="settings">⚙️</span>
+          <span data-i18n="menuSettings">Pengaturan</span>
+        </button>
+        <button class="drop-item" id="dropdownLogout" data-action="logout" type="button">
+          <span class="drop-icon" data-icon="logout">🚪</span>
+          <span data-i18n="btnLogout">Keluar</span>
+        </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-head">
+          <div class="hero-title" id="summaryTitle" data-i18n="summaryTitleToday">Ringkasan Hari Ini</div>
+          <div class="summary-filter">
+            <select id="summaryRange" name="summaryRange" required>
+              <option value="today" data-i18n="summaryToday">Hari ini</option>
+              <option value="week" data-i18n="summaryWeek">Minggu ini</option>
+              <option value="year" data-i18n="summaryYear">Tahun ini</option>
+              <option value="all" data-i18n="summaryAll">Semua</option>
+            </select>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-icon" data-icon="statsIncome">⬆️</div>
+            <div>
+              <div class="stat-label" data-i18n="labelIncome">Pemasukkan</div>
+              <div class="stat-value" id="sumIncome">Rp0</div>
+            </div>
+          </div>
+          <div class="stat">
+            <div class="stat-icon" data-icon="statsExpense">⬇️</div>
+            <div>
+              <div class="stat-label" data-i18n="labelExpense">Pengeluaran</div>
+              <div class="stat-value" id="sumExpense">Rp0</div>
+            </div>
+          </div>
+          <div class="stat stat-balance">
+            <div class="stat-icon" data-icon="statsBalance">✨</div>
+            <div>
+              <div class="stat-label" data-i18n="labelBalance">Saldo</div>
+              <div class="stat-value" id="sumBalance">Rp0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="pages">
+      <section class="page active" data-page="income">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="income">📥</span>
+            <span data-i18n="pageIncomeTitle">Pemasukkan</span>
+          </h2>
+          <p data-i18n="pageIncomeDesc">Catat semua pemasukkanmu dengan rapi.</p>
+        </div>
+        <form class="form-card" id="incomeForm">
+          <input type="hidden" name="id" />
+          <label>
+            <span data-i18n="labelAmount">Nominal</span>
+            <input type="number" name="amount" inputmode="numeric" required />
+          </label>
+          <label>
+            <span data-i18n="labelDate">Tanggal</span>
+            <input type="date" name="date" required />
+          </label>
+          <label>
+            <span data-i18n="labelCategory">Kategori</span>
+            <input
+              type="text"
+              name="category"
+              placeholder="Gaji, bonus, dll"
+              data-i18n-placeholder="placeholderIncomeCategory"
+              required
+            />
+          </label>
+          <label>
+            <span data-i18n="labelIncomeSource">Sumber Pemasukkan</span>
+            <select name="source" required>
+              <option value="" data-i18n="optionChooseSource">Pilih sumber</option>
+              <option data-i18n="optionWork">Kerja</option>
+              <option data-i18n="optionBusiness">Bisnis</option>
+              <option data-i18n="optionFreelance">Freelance</option>
+              <option data-i18n="optionBonus">Bonus</option>
+              <option data-i18n="optionOther">Lainnya</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="labelIncomeChannel">Masuk ke</span>
+            <select name="channel" required>
+              <option value="" data-i18n="optionChooseAccount">Pilih rekening</option>
+              <option>BCA</option>
+              <option>SeaBank</option>
+              <option>Mandiri</option>
+              <option>BNI</option>
+              <option>BRI</option>
+              <option data-i18n="optionCash">Cash</option>
+              <option data-i18n="optionEWallet">E-Wallet</option>
+              <option data-i18n="optionOther">Lainnya</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="labelNote">Catatan</span>
+            <textarea
+              name="note"
+              rows="2"
+              placeholder="Detail tambahan"
+              data-i18n-placeholder="placeholderNote"
+            ></textarea>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSaveIncome">
+            Simpan Pemasukkan
+          </button>
+        </form>
+        <div class="list" id="incomeList"></div>
+      </section>
+
+      <section class="page" data-page="expense">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="expense">📤</span>
+            <span data-i18n="pageExpenseTitle">Pengeluaran</span>
+          </h2>
+          <p data-i18n="pageExpenseDesc">Kontrol pengeluaran supaya tetap aman.</p>
+        </div>
+        <form class="form-card" id="expenseForm">
+          <input type="hidden" name="id" />
+          <label>
+            <span data-i18n="labelAmount">Nominal</span>
+            <input type="number" name="amount" inputmode="numeric" required />
+          </label>
+          <label>
+            <span data-i18n="labelDate">Tanggal</span>
+            <input type="date" name="date" required />
+          </label>
+          <label>
+            <span data-i18n="labelCategory">Kategori</span>
+            <input
+              type="text"
+              name="category"
+              placeholder="Makan, transport, dll"
+              data-i18n-placeholder="placeholderExpenseCategory"
+              required
+            />
+          </label>
+          <label>
+            <span data-i18n="labelPaymentMethod">Metode Pembayaran</span>
+            <select name="method" required>
+              <option value="" data-i18n="optionChooseMethod">Pilih metode</option>
+              <option data-i18n="optionTransfer">Transfer</option>
+              <option data-i18n="optionQRIS">QRIS</option>
+              <option data-i18n="optionCash">Cash</option>
+              <option data-i18n="optionDebit">Debit</option>
+              <option data-i18n="optionCredit">Kredit</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="labelBankWallet">Bank / Wallet</span>
+            <select name="bank" required>
+              <option value="" data-i18n="optionChooseBank">Pilih bank/wallet</option>
+              <option>BCA</option>
+              <option>SeaBank</option>
+              <option>Mandiri</option>
+              <option>BNI</option>
+              <option>BRI</option>
+              <option>DANA</option>
+              <option>OVO</option>
+              <option>GoPay</option>
+              <option>ShopeePay</option>
+              <option data-i18n="optionCash">Cash</option>
+              <option data-i18n="optionOther">Lainnya</option>
+            </select>
+          </label>
+          <label>
+            <span data-i18n="labelNote">Catatan</span>
+            <textarea
+              name="note"
+              rows="2"
+              placeholder="Detail tambahan"
+              data-i18n-placeholder="placeholderNote"
+            ></textarea>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSaveExpense">
+            Simpan Pengeluaran
+          </button>
+        </form>
+        <div class="list" id="expenseList"></div>
+      </section>
+
+      <section class="page" data-page="saving">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="saving">🏦</span>
+            <span data-i18n="pageSavingTitle">Tabungan</span>
+          </h2>
+          <p data-i18n="pageSavingDesc">Target tabungan jadi lebih cepat tercapai.</p>
+        </div>
+        <form class="form-card" id="savingForm">
+          <input type="hidden" name="id" />
+          <label>
+            <span data-i18n="labelAmount">Nominal</span>
+            <input type="number" name="amount" inputmode="numeric" required />
+          </label>
+          <label>
+            <span data-i18n="labelDate">Tanggal</span>
+            <input type="date" name="date" required />
+          </label>
+          <label>
+            <span data-i18n="labelGoal">Tujuan</span>
+            <input
+              type="text"
+              name="category"
+              placeholder="Dana darurat, liburan"
+              data-i18n-placeholder="placeholderSavingGoal"
+              required
+            />
+          </label>
+          <label>
+            <span data-i18n="labelNote">Catatan</span>
+            <textarea
+              name="note"
+              rows="2"
+              placeholder="Detail tambahan"
+              data-i18n-placeholder="placeholderNote"
+            ></textarea>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSaveSaving">
+            Simpan Tabungan
+          </button>
+        </form>
+        <div class="list" id="savingList"></div>
+      </section>
+
+      <section class="page" data-page="dreams">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="dreams">🌟</span>
+            <span data-i18n="pageDreamsTitle">Target</span>
+          </h2>
+          <p data-i18n="pageDreamsDesc">Visualisasikan targetmu dan lihat progresnya.</p>
+        </div>
+        <form class="form-card" id="dreamForm">
+          <input type="hidden" name="id" />
+          <label>
+            <span data-i18n="labelDreamTitle">Nama Target</span>
+            <input
+              type="text"
+              name="title"
+              placeholder="Contoh: Laptop baru"
+              data-i18n-placeholder="placeholderDreamTitle"
+              required
+            />
+          </label>
+          <label>
+            <span data-i18n="labelTargetAmount">Target Dana</span>
+            <input type="number" name="target" inputmode="numeric" required />
+          </label>
+          <label>
+            <span data-i18n="labelCurrentAmount">Dana Terkumpul</span>
+            <input type="number" name="current" inputmode="numeric" required />
+          </label>
+          <label>
+            <span data-i18n="labelDeadline">Deadline</span>
+            <input type="date" name="deadline" required />
+          </label>
+          <label>
+            <span data-i18n="labelNote">Catatan</span>
+            <textarea
+              name="note"
+              rows="2"
+              placeholder="Strategi untuk target"
+              data-i18n-placeholder="placeholderDreamNote"
+            ></textarea>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSaveDream">
+            Simpan Target
+          </button>
+        </form>
+        <div class="list" id="dreamList"></div>
+      </section>
+
+      <section class="page" data-page="calculator">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="calculator">🧮</span>
+            <span data-i18n="pageCalculatorTitle">Kalkulator</span>
+          </h2>
+          <p data-i18n="pageCalculatorDesc">Hitung cepat kebutuhan keuanganmu.</p>
+        </div>
+        <div class="calc">
+          <div class="calc-display" id="calcDisplay">0</div>
+          <div class="calc-keys">
+            <button type="button" data-key="7">7</button>
+            <button type="button" data-key="8">8</button>
+            <button type="button" data-key="9">9</button>
+            <button type="button" class="accent" data-key="/">÷</button>
+            <button type="button" data-key="4">4</button>
+            <button type="button" data-key="5">5</button>
+            <button type="button" data-key="6">6</button>
+            <button type="button" class="accent" data-key="*">×</button>
+            <button type="button" data-key="1">1</button>
+            <button type="button" data-key="2">2</button>
+            <button type="button" data-key="3">3</button>
+            <button type="button" class="accent" data-key="-">−</button>
+            <button type="button" data-key="0">0</button>
+            <button type="button" data-key=".">.</button>
+            <button type="button" class="danger" data-action="clear">C</button>
+            <button type="button" class="accent" data-key="+">+</button>
+            <button type="button" class="wide primary-btn" data-action="equals">=</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" data-page="report">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="report">📈</span>
+            <span data-i18n="pageReportTitle">Laporan</span>
+          </h2>
+        </div>
+        <div class="report-card">
+          <div class="report-controls">
+            <button
+              class="chip-btn report-btn active"
+              data-report="month"
+              type="button"
+              data-i18n="reportMonthly"
+            >
+              Bulanan
+            </button>
+            <button class="chip-btn report-btn" data-report="year" type="button" data-i18n="reportYearly">
+              Tahunan
+            </button>
+          </div>
+          <canvas id="reportChart" width="320" height="200"></canvas>
+          <div class="report-summary" id="reportSummary"></div>
+        </div>
+        <div class="report-actions">
+          <button class="export-btn" id="exportPdfBtn" type="button" data-i18n="btnExportPdf">
+            Export PDF
+          </button>
+          <button class="export-btn" id="exportCsvBtn" type="button" data-i18n="btnExportCsv">
+            Export CSV
+          </button>
+        </div>
+      </section>
+
+      <section class="page" data-page="profile">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="profile">👤</span>
+            <span data-i18n="pageProfileTitle">Profile</span>
+          </h2>
+          <p data-i18n="pageProfileDesc">Data biodata ditampilkan di sini.</p>
+        </div>
+        <div class="profile-card" id="profileInfo"></div>
+        <form class="form-card" id="profileForm">
+          <h3 data-i18n="profileUpdateTitle">Update Biodata</h3>
+          <label>
+            <span data-i18n="labelFullName">Nama Lengkap</span>
+            <input type="text" name="name" required />
+          </label>
+          <label>
+            <span data-i18n="labelEmail">Email</span>
+            <input type="email" name="email" required />
+          </label>
+          <label>
+            <span data-i18n="labelPhone">No. HP</span>
+            <input type="tel" name="phone" required />
+          </label>
+          <label>
+            <span data-i18n="labelAddress">Negara</span>
+            <select name="address" id="profileCountry" required></select>
+          </label>
+          <label>
+            <span data-i18n="labelBirthdate">Tanggal Lahir</span>
+            <input type="date" name="birthdate" required />
+          </label>
+          <label>
+            <span data-i18n="labelBio">Bio Singkat</span>
+            <textarea name="bio" rows="2"></textarea>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSaveProfile">Simpan Profil</button>
+        </form>
+        <button class="ghost-btn" id="logoutBtn" type="button" data-i18n="btnLogout">
+          Keluar / Logout
+        </button>
+      </section>
+
+      <section class="page" data-page="settings">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="settings">⚙️</span>
+            <span data-i18n="pageSettingsTitle">Pengaturan</span>
+          </h2>
+          <p data-i18n="pageSettingsDesc">Kelola bahasa dan keamanan akun.</p>
+        </div>
+        <div class="form-card">
+          <h3 data-i18n="settingsLanguageTitle">Bahasa</h3>
+          <div class="lang-row">
+            <div class="lang-label" data-i18n="languageLabel">Bahasa</div>
+            <div class="lang-switch">
+              <button class="lang-btn active" data-lang="id" type="button">IN</button>
+              <button class="lang-btn" data-lang="en" type="button">EN</button>
+            </div>
+          </div>
+        </div>
+        <form class="form-card" id="passwordForm">
+          <h3 data-i18n="settingsPasswordTitle">Ganti Password</h3>
+          <label>
+            <span data-i18n="labelCurrentPassword">Password Saat Ini</span>
+            <input type="password" name="currentPassword" autocomplete="current-password" required />
+          </label>
+          <label>
+            <span data-i18n="labelNewPassword">Password Baru</span>
+            <input type="password" name="newPassword" autocomplete="new-password" required />
+          </label>
+          <label>
+            <span data-i18n="labelConfirmPassword">Konfirmasi Password</span>
+            <input type="password" name="confirmPassword" autocomplete="new-password" required />
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSavePassword">Simpan Password</button>
+        </form>
+      </section>
+
+      <section class="page" data-page="themes">
+        <div class="page-head">
+          <h2>
+            <span class="page-icon" data-icon="themes">🎨</span>
+            <span data-i18n="pageThemesTitle">Ganti Tema</span>
+          </h2>
+          <p data-i18n="pageThemesDesc">Pilih tema favoritmu: kartun atau standard.</p>
+        </div>
+        <div class="theme-grid" id="themeGrid">
+          <button class="theme-card theme-card--standard-light" data-theme="standard-light">
+            <span>🌤️</span>
+            <span data-i18n="themeStandardLight">Standard Light</span>
+          </button>
+          <button class="theme-card theme-card--standard-dark" data-theme="standard-dark">
+            <span>🌙</span>
+            <span data-i18n="themeStandardDark">Standard Dark</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-food" data-theme="cartoon-food">
+            <span>🍩</span>
+            <span data-i18n="themeCartoonFood">Kartun Makanan</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-space" data-theme="cartoon-space">
+            <span>🪐</span>
+            <span data-i18n="themeCartoonSpace">Kartun Luar Angkasa</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-monster" data-theme="cartoon-monster">
+            <span>👾</span>
+            <span data-i18n="themeCartoonMonster">Kartun Monster</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-hero" data-theme="cartoon-hero">
+            <span>🦸</span>
+            <span data-i18n="themeCartoonHero">Kartun Superhero</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-sea" data-theme="cartoon-sea">
+            <span>🌊</span>
+            <span data-i18n="themeCartoonSea">Kartun Laut</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-plant" data-theme="cartoon-plant">
+            <span>🪴</span>
+            <span data-i18n="themeCartoonPlant">Kartun Tanaman</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-pinky" data-theme="cartoon-pinky">
+            <span>🎀</span>
+            <span data-i18n="themeCartoonPinky">Kartun Pinky</span>
+          </button>
+          <button class="theme-card theme-card--cartoon-colorful" data-theme="cartoon-colorful">
+            <span>🌈</span>
+            <span data-i18n="themeCartoonColorful">Kartun Colorful</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-nav="income">
+        <span class="nav-icon" data-icon="income">💸</span>
+        <span data-i18n="navIncome">Pemasukkan</span>
+      </button>
+      <button class="nav-btn" data-nav="expense">
+        <span class="nav-icon" data-icon="expense">🧾</span>
+        <span data-i18n="navExpense">Pengeluaran</span>
+      </button>
+      <button class="nav-btn" data-nav="dreams">
+        <span class="nav-icon" data-icon="dreams">🌟</span>
+        <span data-i18n="navDreams">Target</span>
+      </button>
+      <button class="nav-btn" data-nav="report">
+        <span class="nav-icon" data-icon="report">📈</span>
+        <span data-i18n="navReport">Laporan</span>
+      </button>
+    </nav>
+
+    <footer class="watermark">Solvix Studio © 2026</footer>
+
+    <div class="modal splash" id="splashModal" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close" data-close="splash" type="button">x</button>
+        <img src="assets/img/logo2.png" alt="Logo Solvix Studio" class="logo-img" />
+        <h3 data-i18n="splashTitle">Selamat Datang!</h3>
+        <p data-i18n="splashDesc">Masuk untuk mulai mengelola tabunganmu.</p>
+        <button class="primary-btn" id="openAuthBtn" type="button">
+          <span data-i18n="splashBtn">Masuk Aplikasi</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="modal auth" id="authModal" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close" data-close="auth" type="button">x</button>
+        <div class="auth-tabs">
+          <button class="tab-btn active" data-tab="signin" type="button" data-i18n="authSignInTab">
+            Sign In
+          </button>
+          <button class="tab-btn" data-tab="signup" type="button" data-i18n="authSignUpTab">
+            Sign Up
+          </button>
+        </div>
+        <form class="auth-form active" id="signInForm" data-tab-panel="signin" autocomplete="off">
+          <label>
+            <span data-i18n="labelUsername">Username</span>
+            <input type="text" name="username" autocomplete="off" autocapitalize="off" spellcheck="false" required />
+          </label>
+          <label>
+            <span data-i18n="labelPassword">Password</span>
+            <div class="input-eye">
+              <input type="password" name="password" autocomplete="new-password" required />
+              <button class="eye-btn" type="button" data-eye="signin" aria-label="Toggle password">👁</button>
+            </div>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSignIn">Masuk</button>
+        </form>
+        <form class="auth-form" id="signUpForm" data-tab-panel="signup" autocomplete="off">
+          <label>
+            <span data-i18n="labelFullName">Nama Lengkap</span>
+            <input type="text" name="name" autocomplete="off" required />
+          </label>
+          <label>
+            <span data-i18n="labelEmail">Email</span>
+            <input type="email" name="email" autocomplete="off" required />
+          </label>
+          <label>
+            <span data-i18n="labelPhone">No. HP</span>
+            <input type="tel" name="phone" autocomplete="off" required />
+          </label>
+          <label>
+            <span data-i18n="labelAddress">Negara</span>
+            <select name="address" id="signupCountry" required></select>
+          </label>
+          <label>
+            <span data-i18n="labelBirthdate">Tanggal Lahir</span>
+            <input type="date" name="birthdate" autocomplete="off" required />
+          </label>
+          <label>
+            <span data-i18n="labelBio">Bio Singkat</span>
+            <textarea name="bio" rows="2" autocomplete="off"></textarea>
+          </label>
+          <label>
+            <span data-i18n="labelUsername">Username</span>
+            <input type="text" name="username" autocomplete="off" autocapitalize="off" spellcheck="false" required />
+          </label>
+          <label>
+            <span data-i18n="labelPassword">Password</span>
+            <div class="input-eye">
+              <input type="password" name="password" autocomplete="new-password" required />
+              <button class="eye-btn" type="button" data-eye="signup" aria-label="Toggle password">👁</button>
+            </div>
+          </label>
+          <button class="primary-btn" type="submit" data-i18n="btnSignUp">Buat Akun</button>
+        </form>
+        <button class="ghost-btn" id="closeAuthBtn" type="button" data-i18n="btnClose">
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <div class="modal confirm" id="confirmModal" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close" data-close="confirm" type="button">x</button>
+        <h3 data-i18n="confirmTitle">Konfirmasi</h3>
+        <p id="confirmText" data-i18n="confirmDefault">Yakin melakukan aksi ini?</p>
+        <div class="modal-actions">
+          <button class="ghost-btn" id="confirmCancel" type="button" data-i18n="btnCancel">Batal</button>
+          <button class="primary-btn" id="confirmOk" type="button" data-i18n="btnConfirm">
+            Ya, Lanjut
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal alert" id="alertModal" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close" data-close="alert" type="button">x</button>
+        <h3 id="alertTitle" data-i18n="alertTitle">Info</h3>
+        <p id="alertText">Pesan</p>
+        <button class="primary-btn" id="alertOk" type="button" data-i18n="btnOk">Oke</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>
