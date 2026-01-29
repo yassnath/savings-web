@@ -8,6 +8,8 @@ const STORAGE = {
   theme: "svx_theme",
   lang: "svx_lang",
   summaryRange: "svx_summary_range",
+  historyFrom: "svx_history_from",
+  historyTo: "svx_history_to",
 };
 
 const ICON_SETS = {
@@ -19,6 +21,7 @@ const ICON_SETS = {
     saving: "💰",
     dreams: "🌈",
     report: "📊",
+    history: "📒",
     calculator: "🧮",
     themes: "🌤️",
     settings: "⚙️",
@@ -36,6 +39,7 @@ const ICON_SETS = {
     saving: "🪙",
     dreams: "🌙",
     report: "📈",
+    history: "🗂️",
     calculator: "🧮",
     themes: "🎛️",
     settings: "🛠️",
@@ -53,6 +57,7 @@ const ICON_SETS = {
     saving: "🥪",
     dreams: "🍰",
     report: "🍕",
+    history: "🍱",
     calculator: "🍭",
     themes: "🍽️",
     settings: "🍳",
@@ -70,6 +75,7 @@ const ICON_SETS = {
     saving: "🛰️",
     dreams: "🌌",
     report: "📡",
+    history: "🧭",
     calculator: "🧭",
     themes: "🌠",
     settings: "🛰️",
@@ -87,6 +93,7 @@ const ICON_SETS = {
     saving: "🧪",
     dreams: "🧠",
     report: "🧿",
+    history: "📓",
     calculator: "🔮",
     themes: "🧪",
     settings: "🕸️",
@@ -104,6 +111,7 @@ const ICON_SETS = {
     saving: "🛡️",
     dreams: "⭐",
     report: "🏆",
+    history: "📜",
     calculator: "🔧",
     themes: "🏁",
     settings: "🛠️",
@@ -121,6 +129,7 @@ const ICON_SETS = {
     saving: "🐬",
     dreams: "🐳",
     report: "🪸",
+    history: "🗺️",
     calculator: "🐙",
     themes: "🌊",
     settings: "⚓",
@@ -138,6 +147,7 @@ const ICON_SETS = {
     saving: "🌲",
     dreams: "🌷",
     report: "🍃",
+    history: "📗",
     calculator: "🍀",
     themes: "🌻",
     settings: "🍃",
@@ -155,6 +165,7 @@ const ICON_SETS = {
     saving: "💎",
     dreams: "🌸",
     report: "💫",
+    history: "📔",
     calculator: "💮",
     themes: "🌷",
     settings: "💫",
@@ -172,6 +183,7 @@ const ICON_SETS = {
     saving: "🎁",
     dreams: "🌟",
     report: "📊",
+    history: "📚",
     calculator: "🧩",
     themes: "🪩",
     settings: "🎨",
@@ -396,7 +408,9 @@ const defaultData = {
 const state = {
   data: loadData(),
   theme: localStorage.getItem(STORAGE.theme) || "standard-light",
-  summaryRange: localStorage.getItem(STORAGE.summaryRange) || "today",
+  summaryRange: localStorage.getItem(STORAGE.summaryRange) || "month",
+  historyFrom: localStorage.getItem(STORAGE.historyFrom) || "",
+  historyTo: localStorage.getItem(STORAGE.historyTo) || "",
 };
 
 let currentReportMode = "month";
@@ -411,10 +425,13 @@ const I18N = {
     heroTitle: "Ringkasan Hari Ini",
     summaryTitleToday: "Ringkasan Hari Ini",
     summaryTitleWeek: "Ringkasan Minggu Ini",
+    summaryTitleMonth: "Ringkasan Bulan Ini",
     summaryTitleYear: "Ringkasan Tahun Ini",
     summaryTitleAll: "Ringkasan Semua",
+    summaryTitleRange: "Ringkasan Periode",
     summaryToday: "Hari ini",
     summaryWeek: "Minggu ini",
+    summaryMonth: "Bulan ini",
     summaryYear: "Tahun ini",
     summaryAll: "Semua",
     labelIncome: "Pemasukkan",
@@ -431,6 +448,8 @@ const I18N = {
     pageCalculatorTitle: "Kalkulator",
     pageCalculatorDesc: "Hitung cepat kebutuhan keuanganmu.",
     pageReportTitle: "Laporan",
+    pageHistoryTitle: "History",
+    pageHistoryDesc: "Riwayat transaksi pemasukkan dan pengeluaran.",
     pageProfileTitle: "Profile",
     pageProfileDesc: "Data biodata ditampilkan di sini.",
     pageThemesTitle: "Ganti Tema",
@@ -439,6 +458,8 @@ const I18N = {
     pageSettingsDesc: "Kelola bahasa dan keamanan akun.",
     labelAmount: "Nominal",
     labelDate: "Tanggal",
+    labelFrom: "Dari",
+    labelTo: "Sampai",
     labelCategory: "Kategori",
     labelIncomeSource: "Sumber Pemasukkan",
     labelIncomeChannel: "Masuk ke",
@@ -476,9 +497,10 @@ const I18N = {
     navIncome: "Pemasukkan",
     navExpense: "Pengeluaran",
     navDreams: "Target",
-    navReport: "Laporan",
+    navHistory: "History",
     menuThemes: "Tema",
     menuCalculator: "Kalkulator",
+    menuReport: "Laporan",
     menuProfile: "Profile",
     menuSettings: "Pengaturan",
     languageLabel: "Bahasa",
@@ -505,6 +527,8 @@ const I18N = {
     optionBusiness: "Bisnis",
     optionFreelance: "Freelance",
     optionBonus: "Bonus",
+    optionSavings: "Tabungan",
+    optionInvestment: "Investasi",
     optionOther: "Lainnya",
     optionChooseAccount: "Pilih rekening",
     optionChooseCountry: "Pilih negara",
@@ -579,6 +603,8 @@ const I18N = {
     msgExtraRequired: "Lengkapi semua pilihan tambahan.",
     msgEmptyDataTitle: "Belum ada data.",
     msgEmptyDataDesc: "Tambahkan data baru di atas.",
+    historyEmptyTitle: "Belum ada transaksi.",
+    historyEmptyDesc: "Mulai catat pemasukkan dan pengeluaranmu.",
     msgNoNote: "Tanpa catatan",
     msgEmptyDreamTitle: "Belum ada target.",
     msgEmptyDreamDesc: "Buat target impianmu.",
@@ -592,6 +618,8 @@ const I18N = {
     reportModeYearly: "Tahunan",
     reportModeLabel: "Mode",
     reportTotalLabel: "Total saldo periode",
+    reportIncomeLabel: "Total pemasukkan",
+    reportExpenseLabel: "Total pengeluaran",
     reportHeaderPeriod: "Periode",
     reportHeaderValue: "Saldo",
     msgExportBlocked: "Popup diblokir. Izinkan popup untuk export PDF.",
@@ -603,10 +631,13 @@ const I18N = {
     heroTitle: "Today Summary",
     summaryTitleToday: "Today's Summary",
     summaryTitleWeek: "This Week Summary",
+    summaryTitleMonth: "This Month Summary",
     summaryTitleYear: "This Year Summary",
     summaryTitleAll: "Overall Summary",
+    summaryTitleRange: "Summary Range",
     summaryToday: "Today",
     summaryWeek: "This Week",
+    summaryMonth: "This Month",
     summaryYear: "This Year",
     summaryAll: "All Time",
     labelIncome: "Income",
@@ -623,6 +654,8 @@ const I18N = {
     pageCalculatorTitle: "Calculator",
     pageCalculatorDesc: "Quickly calculate your finances.",
     pageReportTitle: "Report",
+    pageHistoryTitle: "History",
+    pageHistoryDesc: "Income and expense transaction history.",
     pageProfileTitle: "Profile",
     pageProfileDesc: "Your biodata appears here.",
     pageThemesTitle: "Change Theme",
@@ -631,6 +664,8 @@ const I18N = {
     pageSettingsDesc: "Manage language and account security.",
     labelAmount: "Amount",
     labelDate: "Date",
+    labelFrom: "From",
+    labelTo: "To",
     labelCategory: "Category",
     labelIncomeSource: "Income Source",
     labelIncomeChannel: "Deposit To",
@@ -668,9 +703,10 @@ const I18N = {
     navIncome: "Income",
     navExpense: "Expense",
     navDreams: "Goals",
-    navReport: "Report",
+    navHistory: "History",
     menuThemes: "Theme",
     menuCalculator: "Calculator",
+    menuReport: "Report",
     menuProfile: "Profile",
     menuSettings: "Settings",
     languageLabel: "Language",
@@ -697,6 +733,8 @@ const I18N = {
     optionBusiness: "Business",
     optionFreelance: "Freelance",
     optionBonus: "Bonus",
+    optionSavings: "Savings",
+    optionInvestment: "Investment",
     optionOther: "Other",
     optionChooseAccount: "Choose account",
     optionChooseCountry: "Choose country",
@@ -771,6 +809,8 @@ const I18N = {
     msgExtraRequired: "Please complete all extra fields.",
     msgEmptyDataTitle: "No data yet.",
     msgEmptyDataDesc: "Add new data above.",
+    historyEmptyTitle: "No transactions yet.",
+    historyEmptyDesc: "Start logging your income and expenses.",
     msgNoNote: "No notes",
     msgEmptyDreamTitle: "No goals yet.",
     msgEmptyDreamDesc: "Create your dream goal.",
@@ -784,6 +824,8 @@ const I18N = {
     reportModeYearly: "Yearly",
     reportModeLabel: "Mode",
     reportTotalLabel: "Total balance",
+    reportIncomeLabel: "Total income",
+    reportExpenseLabel: "Total expense",
     reportHeaderPeriod: "Period",
     reportHeaderValue: "Balance",
     msgExportBlocked: "Popup was blocked. Please allow popups to export PDF.",
@@ -871,6 +913,14 @@ function formatDate(value) {
   });
 }
 
+function formatInputDate(date) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 function formatSaldo(value) {
   const abs = Math.abs(value);
   const formatted = new Intl.NumberFormat("id-ID").format(abs);
@@ -883,6 +933,29 @@ function parseLocalDate(value) {
   const [year, month, day] = value.split("-").map((part) => Number(part));
   if (!year || !month || !day) return null;
   return new Date(year, month - 1, day);
+}
+
+function getDefaultHistoryRange() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  return {
+    from: formatInputDate(start),
+    to: formatInputDate(now),
+  };
+}
+
+function getHistoryBounds() {
+  let start = parseLocalDate(state.historyFrom);
+  let end = parseLocalDate(state.historyTo);
+  if (start && end && start.getTime() > end.getTime()) {
+    const temp = start;
+    start = end;
+    end = temp;
+  }
+  if (end) {
+    end = new Date(end.getFullYear(), end.getMonth(), end.getDate(), 23, 59, 59, 999);
+  }
+  return { start, end };
 }
 
 function isSameDay(a, b) {
@@ -917,6 +990,11 @@ function getRangeBoundaries(range) {
     end.setHours(23, 59, 59, 999);
     return { start, end };
   }
+  if (range === "month") {
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    return { start, end };
+  }
   if (range === "year") {
     const start = new Date(now.getFullYear(), 0, 1);
     const end = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
@@ -940,6 +1018,38 @@ function sumByRange(list, range) {
     if (!isInRange(date, start, end)) return acc;
     return acc + item.amount;
   }, 0);
+}
+
+function filterByRange(list, range) {
+  if (range === "all") return list.slice();
+  const { start, end } = getRangeBoundaries(range);
+  return list.filter((item) => {
+    const date = parseLocalDate(item.date);
+    if (!date) return false;
+    if (range === "today") return isSameDay(date, new Date());
+    return isInRange(date, start, end);
+  });
+}
+
+function sumByDateRange(list, start, end) {
+  if (!start && !end) {
+    return list.reduce((acc, item) => acc + item.amount, 0);
+  }
+  return list.reduce((acc, item) => {
+    const date = parseLocalDate(item.date);
+    if (!date) return acc;
+    if (!isInRange(date, start, end)) return acc;
+    return acc + item.amount;
+  }, 0);
+}
+
+function filterByDateRange(list, start, end) {
+  if (!start && !end) return list.slice();
+  return list.filter((item) => {
+    const date = parseLocalDate(item.date);
+    if (!date) return false;
+    return isInRange(date, start, end);
+  });
 }
 
 function applyTranslations() {
@@ -976,6 +1086,7 @@ function setLanguage(lang) {
   updateProfile();
   updateSummary();
   updateReport(currentReportMode);
+  renderHistory();
 }
 
 function populateCountrySelects() {
@@ -1150,30 +1261,60 @@ function showPage(name) {
   });
   const hero = $(".hero");
   if (hero) {
-    hero.classList.toggle("hidden", name !== "income");
+    hero.classList.toggle("hidden", !["income", "expense"].includes(name));
   }
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function updateSummary() {
-  const range = state.summaryRange || "today";
+  const range = state.summaryRange || "month";
   const sumIncome = sumByRange(state.data.income, range);
   const sumExpense = sumByRange(state.data.expense, range);
   const balance = sumIncome - sumExpense;
   $("#sumIncome").textContent = fmt.format(sumIncome);
   $("#sumExpense").textContent = fmt.format(sumExpense);
   $("#sumBalance").textContent = formatSaldo(balance);
-  const titleMap = {
-    today: "summaryTitleToday",
-    week: "summaryTitleWeek",
-    year: "summaryTitleYear",
-    all: "summaryTitleAll",
-  };
   const titleEl = $("#summaryTitle");
-  if (titleEl) titleEl.textContent = t(titleMap[range] || "summaryTitleToday");
+  if (titleEl) titleEl.textContent = t(getSummaryTitleKey(range));
+  const expenseTitleEl = $("#expenseSummaryTitle");
+  if (expenseTitleEl) expenseTitleEl.textContent = t(getSummaryTitleKey(range));
+  const expenseSumIncome = $("#expenseSumIncome");
+  const expenseSumExpense = $("#expenseSumExpense");
+  const expenseSumBalance = $("#expenseSumBalance");
+  if (expenseSumIncome) expenseSumIncome.textContent = fmt.format(sumIncome);
+  if (expenseSumExpense) expenseSumExpense.textContent = fmt.format(sumExpense);
+  if (expenseSumBalance) expenseSumBalance.textContent = formatSaldo(balance);
+}
+
+function getSummaryTitleKey(range) {
+  return (
+    {
+      today: "summaryTitleToday",
+      week: "summaryTitleWeek",
+      month: "summaryTitleMonth",
+      year: "summaryTitleYear",
+      all: "summaryTitleAll",
+    }[range] || "summaryTitleMonth"
+  );
+}
+
+function updateHistorySummary() {
+  const { start, end } = getHistoryBounds();
+  const sumIncome = sumByDateRange(state.data.income, start, end);
+  const sumExpense = sumByDateRange(state.data.expense, start, end);
+  const balance = sumIncome - sumExpense;
+  const titleEl = $("#historySummaryTitle");
+  if (titleEl) titleEl.textContent = t("summaryTitleRange");
+  const historySumIncome = $("#historySumIncome");
+  const historySumExpense = $("#historySumExpense");
+  const historySumBalance = $("#historySumBalance");
+  if (historySumIncome) historySumIncome.textContent = fmt.format(sumIncome);
+  if (historySumExpense) historySumExpense.textContent = fmt.format(sumExpense);
+  if (historySumBalance) historySumBalance.textContent = formatSaldo(balance);
 }
 
 function renderMoneyList(type, listEl) {
+  if (!listEl) return;
   const items = state.data[type];
   if (!items.length) {
     listEl.innerHTML = `<div class="item-card"><div class="item-title">${t("msgEmptyDataTitle")}</div><div class="item-meta">${t("msgEmptyDataDesc")}</div></div>`;
@@ -1206,6 +1347,60 @@ function renderMoneyList(type, listEl) {
       </div>`;
     })
     .join("");
+}
+
+function renderHistory() {
+  const listEl = $("#historyList");
+  if (!listEl) return;
+  const { start, end } = getHistoryBounds();
+  const combined = [
+    ...state.data.income.map((item) => ({ ...item, type: "income" })),
+    ...state.data.expense.map((item) => ({ ...item, type: "expense" })),
+  ];
+  const filtered = filterByDateRange(combined, start, end).sort((a, b) => {
+    const dateA = parseLocalDate(a.date)?.getTime() || 0;
+    const dateB = parseLocalDate(b.date)?.getTime() || 0;
+    return dateB - dateA;
+  });
+  if (!filtered.length) {
+    listEl.innerHTML = `<div class="item-card"><div class="item-title">${t("historyEmptyTitle")}</div><div class="item-meta">${t("historyEmptyDesc")}</div></div>`;
+    updateHistorySummary();
+    return;
+  }
+  listEl.innerHTML = filtered
+    .map((item) => {
+      const amount = fmt.format(item.amount);
+      const typeLabel = item.type === "income" ? t("labelIncome") : t("labelExpense");
+      const metaParts = [
+        `${t("labelDate")}: ${formatDate(item.date)}`,
+        `${t("labelCategory")}: ${item.category || "-"}`,
+      ];
+      if (item.type === "income") {
+        if (item.source) metaParts.push(`${t("metaSource")}: ${item.source}`);
+        if (item.channel) metaParts.push(`${t("metaDeposit")}: ${item.channel}`);
+      } else {
+        if (item.method) metaParts.push(`${t("metaMethod")}: ${item.method}`);
+        if (item.bank) metaParts.push(`${t("metaBank")}: ${item.bank}`);
+      }
+      const noteText = item.note ? item.note : t("msgNoNote");
+      return `
+      <div class="history-card">
+        <div class="history-row">
+          <div class="history-type ${item.type}">${typeLabel}</div>
+          <div class="history-amount">${amount}</div>
+        </div>
+        <ul class="history-meta">
+          ${metaParts.map((meta) => `<li>${meta}</li>`).join("")}
+          <li>${t("labelNote")}: ${noteText}</li>
+        </ul>
+        <div class="item-actions">
+          <button class="edit" data-action="edit" data-id="${item.id}" data-type="${item.type}">${t("btnEdit")}</button>
+          <button class="delete" data-action="delete" data-id="${item.id}" data-type="${item.type}">${t("btnDelete")}</button>
+        </div>
+      </div>`;
+    })
+    .join("");
+  updateHistorySummary();
 }
 
 function renderDreams() {
@@ -1300,19 +1495,54 @@ function handleMoneySubmit(type, form, listEl, extraKeys = []) {
     }
     saveData();
     renderMoneyList(type, listEl);
+    renderHistory();
     resetForm(form);
     showToast(t("msgDataSaved"));
   });
 
+  if (listEl) {
+    listEl.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      if (action === "edit") {
+        const item = state.data[type].find((entry) => entry.id === id);
+        if (item) {
+          fillForm(form, item);
+          form.scrollIntoView({ behavior: "smooth", block: "start" });
+          showAlert(t("msgEditMode"), t("titleEditData"));
+        }
+      }
+      if (action === "delete") {
+        showConfirm(t("msgDeleteConfirm")).then((confirmed) => {
+          if (!confirmed) return;
+          state.data[type] = state.data[type].filter((entry) => entry.id !== id);
+          saveData();
+          renderMoneyList(type, listEl);
+          renderHistory();
+        });
+      }
+    });
+  }
+}
+
+function handleHistoryActions() {
+  const listEl = $("#historyList");
+  if (!listEl) return;
   listEl.addEventListener("click", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
     const id = btn.dataset.id;
     const action = btn.dataset.action;
+    const type = btn.dataset.type;
+    if (!id || !type) return;
     if (action === "edit") {
-      const item = state.data[type].find((entry) => entry.id === id);
-      if (item) {
+      const item = state.data[type]?.find((entry) => entry.id === id);
+      const form = type === "income" ? $("#incomeForm") : $("#expenseForm");
+      if (item && form) {
         fillForm(form, item);
+        showPage(type === "income" ? "income" : "expense");
         form.scrollIntoView({ behavior: "smooth", block: "start" });
         showAlert(t("msgEditMode"), t("titleEditData"));
       }
@@ -1322,7 +1552,8 @@ function handleMoneySubmit(type, form, listEl, extraKeys = []) {
         if (!confirmed) return;
         state.data[type] = state.data[type].filter((entry) => entry.id !== id);
         saveData();
-        renderMoneyList(type, listEl);
+        renderMoneyList(type, type === "income" ? $("#incomeList") : $("#expenseList"));
+        renderHistory();
       });
     }
   });
@@ -1648,39 +1879,42 @@ function getMonthlySeries(year) {
     currentLang === "en"
       ? ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
       : ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-  const values = new Array(12).fill(0);
+  const income = new Array(12).fill(0);
+  const expense = new Array(12).fill(0);
   state.data.income.forEach((item) => {
     if (!item.date) return;
     const date = new Date(item.date);
     if (date.getFullYear() !== year) return;
     const month = date.getMonth();
-    values[month] += item.amount;
+    income[month] += item.amount;
   });
   state.data.expense.forEach((item) => {
     if (!item.date) return;
     const date = new Date(item.date);
     if (date.getFullYear() !== year) return;
     const month = date.getMonth();
-    values[month] -= item.amount;
+    expense[month] += item.amount;
   });
-  return { labels, values };
+  return { labels, income, expense };
 }
 
 function getYearlySeries() {
   const currentYear = new Date().getFullYear();
   const labels = [];
-  const values = [];
+  const income = [];
+  const expense = [];
   for (let y = currentYear - 4; y <= currentYear; y += 1) {
     labels.push(String(y));
-    const income = state.data.income
+    const incomeSum = state.data.income
       .filter((item) => new Date(item.date).getFullYear() === y)
       .reduce((sum, item) => sum + item.amount, 0);
-    const expense = state.data.expense
+    const expenseSum = state.data.expense
       .filter((item) => new Date(item.date).getFullYear() === y)
       .reduce((sum, item) => sum + item.amount, 0);
-    values.push(income - expense);
+    income.push(incomeSum);
+    expense.push(expenseSum);
   }
-  return { labels, values };
+  return { labels, income, expense };
 }
 
 function getReportData(mode = "month") {
@@ -1688,7 +1922,7 @@ function getReportData(mode = "month") {
   return mode === "year" ? getYearlySeries() : getMonthlySeries(year);
 }
 
-function drawChart(labels, values) {
+function drawChart(labels, series = []) {
   const canvas = $("#reportChart");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
@@ -1698,8 +1932,9 @@ function drawChart(labels, values) {
   const padding = 28;
   const chartW = width - padding * 2;
   const chartH = height - padding * 2;
-  const maxVal = Math.max(...values, 1);
-  const minVal = Math.min(...values, 0);
+  const allValues = series.flatMap((item) => item.values);
+  const maxVal = Math.max(...allValues, 1);
+  const minVal = Math.min(...allValues, 0);
   const range = maxVal - minVal || 1;
 
   ctx.strokeStyle = "rgba(255,255,255,0.2)";
@@ -1710,38 +1945,27 @@ function drawChart(labels, values) {
   ctx.lineTo(width - padding, height - padding);
   ctx.stroke();
 
-  const points = values.map((val, idx) => {
-    const x = padding + (chartW / (values.length - 1 || 1)) * idx;
-    const y = padding + chartH - ((val - minVal) / range) * chartH;
-    return { x, y };
-  });
-
-  const gradient = ctx.createLinearGradient(0, padding, 0, height - padding);
-  gradient.addColorStop(0, "rgba(127, 90, 240, 0.7)");
-  gradient.addColorStop(1, "rgba(44, 182, 125, 0.15)");
-
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, height - padding);
-  points.forEach((pt) => ctx.lineTo(pt.x, pt.y));
-  ctx.lineTo(points[points.length - 1].x, height - padding);
-  ctx.closePath();
-  ctx.fillStyle = gradient;
-  ctx.fill();
-
-  ctx.strokeStyle = "#7f5af0";
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
-  points.forEach((pt, idx) => {
-    if (idx === 0) ctx.moveTo(pt.x, pt.y);
-    else ctx.lineTo(pt.x, pt.y);
-  });
-  ctx.stroke();
-
-  ctx.fillStyle = "#ffffff";
-  points.forEach((pt) => {
+  series.forEach((item) => {
+    const points = item.values.map((val, idx) => {
+      const x = padding + (chartW / (item.values.length - 1 || 1)) * idx;
+      const y = padding + chartH - ((val - minVal) / range) * chartH;
+      return { x, y };
+    });
+    ctx.strokeStyle = item.color;
+    ctx.lineWidth = 2.2;
     ctx.beginPath();
-    ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
-    ctx.fill();
+    points.forEach((pt, idx) => {
+      if (idx === 0) ctx.moveTo(pt.x, pt.y);
+      else ctx.lineTo(pt.x, pt.y);
+    });
+    ctx.stroke();
+
+    ctx.fillStyle = item.pointColor || "#ffffff";
+    points.forEach((pt) => {
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
   });
 
   ctx.fillStyle = "rgba(255,255,255,0.7)";
@@ -1756,20 +1980,34 @@ function updateReport(mode = "month") {
   currentReportMode = mode;
   const year = new Date().getFullYear();
   const data = getReportData(mode);
-  drawChart(data.labels, data.values);
-  const total = data.values.reduce((sum, val) => sum + val, 0);
+  const style = getComputedStyle(document.body);
+  const incomeColor = style.getPropertyValue("--accent-2").trim() || "#2cb67d";
+  const expenseColor = style.getPropertyValue("--danger").trim() || "#ff5470";
+  drawChart(data.labels, [
+    { values: data.income, color: incomeColor, pointColor: "#ffffff" },
+    { values: data.expense, color: expenseColor, pointColor: "#ffffff" },
+  ]);
+  const totalIncome = data.income.reduce((sum, val) => sum + val, 0);
+  const totalExpense = data.expense.reduce((sum, val) => sum + val, 0);
+  const total = totalIncome - totalExpense;
+  const totalClass = total >= 0 ? "report-value positive" : "report-value negative";
   $("#reportSummary").innerHTML = `
     <div>${t("reportModeLabel")}: <strong>${mode === "year" ? t("reportModeYearly") : t("reportModeMonthly")} ${
     mode === "month" ? year : ""
   }</strong></div>
-    <div>${t("reportTotalLabel")}: <strong>${fmt.format(total)}</strong></div>
+    <div>${t("reportIncomeLabel")}: <span class="report-value positive">${fmt.format(totalIncome)}</span></div>
+    <div>${t("reportExpenseLabel")}: <span class="report-value negative">${fmt.format(totalExpense)}</span></div>
+    <div>${t("reportTotalLabel")}: <span class="${totalClass}">${fmt.format(total)}</span></div>
   `;
 }
 
 function exportReportCsv() {
   const data = getReportData(currentReportMode);
-  const header = `${t("reportHeaderPeriod")},${t("reportHeaderValue")}`;
-  const rows = data.labels.map((label, idx) => `${label},${data.values[idx]}`);
+  const header = `${t("reportHeaderPeriod")},${t("labelIncome")},${t("labelExpense")},${t("labelBalance")}`;
+  const rows = data.labels.map(
+    (label, idx) =>
+      `${label},${data.income[idx] || 0},${data.expense[idx] || 0},${(data.income[idx] || 0) - (data.expense[idx] || 0)}`
+  );
   const csv = [header, ...rows].join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
@@ -1802,6 +2040,8 @@ function exportReportPdf() {
           body { font-family: Arial, sans-serif; padding: 24px; color: #111; }
           h1 { font-size: 20px; margin: 0 0 12px; }
           .summary { font-size: 12px; margin-bottom: 16px; }
+          .report-value.positive { color: #2cb67d; font-weight: 700; }
+          .report-value.negative { color: #ff5470; font-weight: 700; }
           img { width: 100%; max-width: 720px; border: 1px solid #ddd; border-radius: 12px; }
         </style>
       </head>
@@ -1821,15 +2061,17 @@ function init() {
   setLanguage(currentLang);
   initCustomSelects();
   updateSummary();
-  renderMoneyList("income", $("#incomeList"));
-  renderMoneyList("expense", $("#expenseList"));
+  renderMoneyList("income", null);
+  renderMoneyList("expense", null);
   renderMoneyList("saving", $("#savingList"));
   renderDreams();
+  renderHistory();
 
-  handleMoneySubmit("income", $("#incomeForm"), $("#incomeList"), ["source", "channel"]);
-  handleMoneySubmit("expense", $("#expenseForm"), $("#expenseList"), ["method", "bank"]);
+  handleMoneySubmit("income", $("#incomeForm"), null, ["source", "channel"]);
+  handleMoneySubmit("expense", $("#expenseForm"), null, ["method", "bank"]);
   handleMoneySubmit("saving", $("#savingForm"), $("#savingList"));
   handleDreams();
+  handleHistoryActions();
 
   handleProfileUpdate();
   handlePasswordChange();
@@ -1842,13 +2084,46 @@ function init() {
 
   const summarySelect = $("#summaryRange");
   if (summarySelect) {
-    summarySelect.value = state.summaryRange || "today";
+    summarySelect.value = state.summaryRange || "month";
     summarySelect.addEventListener("change", () => {
-      state.summaryRange = summarySelect.value || "today";
+      state.summaryRange = summarySelect.value || "month";
       localStorage.setItem(STORAGE.summaryRange, state.summaryRange);
       updateSummary();
     });
   }
+
+  const historyFrom = $("#historyFrom");
+  const historyTo = $("#historyTo");
+  const defaultHistory = getDefaultHistoryRange();
+  if (historyFrom) {
+    historyFrom.value = state.historyFrom || defaultHistory.from;
+    state.historyFrom = historyFrom.value;
+    localStorage.setItem(STORAGE.historyFrom, state.historyFrom);
+  }
+  if (historyTo) {
+    historyTo.value = state.historyTo || defaultHistory.to;
+    state.historyTo = historyTo.value;
+    localStorage.setItem(STORAGE.historyTo, state.historyTo);
+  }
+  const handleHistoryRangeChange = () => {
+    state.historyFrom = historyFrom?.value || "";
+    state.historyTo = historyTo?.value || "";
+    const start = parseLocalDate(state.historyFrom);
+    const end = parseLocalDate(state.historyTo);
+    if (historyFrom && historyTo && start && end && start.getTime() > end.getTime()) {
+      const temp = historyFrom.value;
+      historyFrom.value = historyTo.value;
+      historyTo.value = temp;
+      state.historyFrom = historyFrom.value;
+      state.historyTo = historyTo.value;
+    }
+    localStorage.setItem(STORAGE.historyFrom, state.historyFrom);
+    localStorage.setItem(STORAGE.historyTo, state.historyTo);
+    renderHistory();
+  };
+  historyFrom?.addEventListener("change", handleHistoryRangeChange);
+  historyTo?.addEventListener("change", handleHistoryRangeChange);
+  refreshCustomSelects();
 
   $("#themeGrid").addEventListener("click", async (e) => {
     const btn = e.target.closest(".theme-card");

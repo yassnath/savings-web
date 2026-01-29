@@ -46,6 +46,10 @@
           <span class="drop-icon" data-icon="calculator">🧮</span>
           <span data-i18n="menuCalculator">Kalkulator</span>
         </button>
+        <button class="drop-item" data-go="report" type="button">
+          <span class="drop-icon" data-icon="report">📈</span>
+          <span data-i18n="menuReport">Laporan</span>
+        </button>
         <button class="drop-item" data-go="profile" type="button">
           <span class="drop-icon" data-icon="profile">👤</span>
           <span data-i18n="menuProfile">Profile</span>
@@ -65,9 +69,10 @@
     <section class="hero">
       <div class="hero-card">
         <div class="hero-head">
-          <div class="hero-title" id="summaryTitle" data-i18n="summaryTitleToday">Ringkasan Hari Ini</div>
+          <div class="hero-title" id="summaryTitle" data-i18n="summaryTitleMonth">Ringkasan Bulan Ini</div>
           <div class="summary-filter">
             <select id="summaryRange" name="summaryRange" required>
+              <option value="month" data-i18n="summaryMonth" selected>Bulan ini</option>
               <option value="today" data-i18n="summaryToday">Hari ini</option>
               <option value="week" data-i18n="summaryWeek">Minggu ini</option>
               <option value="year" data-i18n="summaryYear">Tahun ini</option>
@@ -138,6 +143,8 @@
               <option data-i18n="optionBusiness">Bisnis</option>
               <option data-i18n="optionFreelance">Freelance</option>
               <option data-i18n="optionBonus">Bonus</option>
+              <option data-i18n="optionSavings">Tabungan</option>
+              <option data-i18n="optionInvestment">Investasi</option>
               <option data-i18n="optionOther">Lainnya</option>
             </select>
           </label>
@@ -401,6 +408,57 @@
         </div>
       </section>
 
+      <section class="page" data-page="history">
+        <div class="page-head history-head">
+          <div class="history-head-row">
+            <h2>
+              <span class="page-icon" data-icon="history">📒</span>
+              <span data-i18n="pageHistoryTitle">History</span>
+            </h2>
+          </div>
+          <p data-i18n="pageHistoryDesc">Riwayat transaksi pemasukkan dan pengeluaran.</p>
+          <div class="history-range">
+            <label>
+              <span data-i18n="labelFrom">Dari</span>
+              <input type="date" id="historyFrom" name="historyFrom" />
+            </label>
+            <label>
+              <span data-i18n="labelTo">Sampai</span>
+              <input type="date" id="historyTo" name="historyTo" />
+            </label>
+          </div>
+        </div>
+        <div class="hero-card hero-card--inline">
+          <div class="hero-title" id="historySummaryTitle" data-i18n="summaryTitleRange">
+            Ringkasan Periode
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <div class="stat-icon" data-icon="statsIncome">⬆️</div>
+              <div>
+                <div class="stat-label" data-i18n="labelIncome">Pemasukkan</div>
+                <div class="stat-value" id="historySumIncome">Rp0</div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="stat-icon" data-icon="statsExpense">⬇️</div>
+              <div>
+                <div class="stat-label" data-i18n="labelExpense">Pengeluaran</div>
+                <div class="stat-value" id="historySumExpense">Rp0</div>
+              </div>
+            </div>
+            <div class="stat stat-balance">
+              <div class="stat-icon" data-icon="statsBalance">✨</div>
+              <div>
+                <div class="stat-label" data-i18n="labelBalance">Saldo</div>
+                <div class="stat-value" id="historySumBalance">Rp0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list" id="historyList"></div>
+      </section>
+
       <section class="page" data-page="profile">
         <div class="page-head">
           <h2>
@@ -545,9 +603,9 @@
         <span class="nav-icon" data-icon="dreams">🌟</span>
         <span data-i18n="navDreams">Target</span>
       </button>
-      <button class="nav-btn" data-nav="report">
-        <span class="nav-icon" data-icon="report">📈</span>
-        <span data-i18n="navReport">Laporan</span>
+      <button class="nav-btn" data-nav="history">
+        <span class="nav-icon" data-icon="history">📒</span>
+        <span data-i18n="navHistory">History</span>
       </button>
     </nav>
 
